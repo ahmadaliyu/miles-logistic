@@ -11,7 +11,7 @@ function AppButton({
   borderColor,
   borderWidth,
   width = "80%",
-  //   height = 4,
+  height,
   fontSize = 18,
   mr,
   ml,
@@ -23,7 +23,11 @@ function AppButton({
   style,
   styleV,
   iconName,
+  innerIcon,
+  iconHeight = 15,
+  iconWidth = 15,
   indicator,
+  borderRadius = 5,
   alignSelf = "center",
   fontFamily = "NSB",
   ...otherprops
@@ -39,7 +43,9 @@ function AppButton({
           backgroundColor: Colors[color],
           borderColor: borderColor,
           borderWidth,
+          borderRadius: borderRadius,
           width: width,
+          height: height,
           alignSelf: alignSelf,
           paddingVertical: pv,
           marginLeft: ml,
@@ -51,8 +57,10 @@ function AppButton({
       ]}
       onPress={onPress}
     >
-      {iconName && <AppSVG svgName={iconName} style={styles.icon} />}
-      {indicator ? (
+      {innerIcon && <AppSVG svgName={innerIcon} width={15} height={15} />}
+      {iconName ? (
+        <AppSVG svgName={iconName} width={iconWidth} height={iconHeight} />
+      ) : indicator ? (
         <View>{indicator}</View>
       ) : (
         <Text
@@ -78,13 +86,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
-    justifyContent: "center",
-    marginVertical: "5%",
+    // marginVertical: "5%",
   },
-  icon: {
-    marginHorizontal: "10%",
-    marginLeft: "3%",
-  },
+
   eText: {
     fontFamily: "NSB",
     color: Colors.default,
