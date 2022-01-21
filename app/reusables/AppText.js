@@ -16,7 +16,7 @@ function AppText({
   mb,
   style,
   fontFamily = "NR",
-  lineHeight,
+  lineHeight = 18,
   alignItems,
   textStyle,
   ...otherProps

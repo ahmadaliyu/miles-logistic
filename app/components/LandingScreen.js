@@ -10,11 +10,11 @@ import Info from "../../assets/icons/info.svg";
 import Barchart from "../../assets/icons/barchart.svg";
 import AppButton from "../reusables/AppButton";
 
-const LandingScreen = () => {
+const LandingScreen = ({ navigation }) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        <View style={{ marginTop: "8%" }}>
+        <View style={{ marginTop: "8%", marginLeft: "5%" }}>
           <AppText
             fontSize={16}
             title="Better delivery"
@@ -27,7 +27,12 @@ const LandingScreen = () => {
             title="Be in control of your package."
           />
         </View>
-        <AppSVG width={300} height={300} svgName={DelieveryAmico} />
+        <AppSVG
+          alignSelf="center"
+          width={300}
+          height={300}
+          svgName={DelieveryAmico}
+        />
         <AppText
           fontSize={20}
           fontFamily="NB"
@@ -95,7 +100,10 @@ const LandingScreen = () => {
             lineHeight={18}
           />
         </View>
-        <AppButton title="Next" />
+        <AppButton
+          onPress={() => navigation.navigate("landing-overview")}
+          title="Next"
+        />
       </View>
     </ScrollView>
   );
