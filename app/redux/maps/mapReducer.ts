@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchPlaces } from "./mapThunk";
+import { autoComplete, fetchPlaces } from "./mapThunk";
 
 const initialState = {
   placesDetail: [],
+  autoCompletePlaces: [],
   status: "idle",
   error: null,
 };
+
 
 const mapSlice = createSlice({
   name: "fetchPlaces",
@@ -19,9 +21,22 @@ const mapSlice = createSlice({
     [fetchPlaces.fulfilled]: (state, action) => {
       state.status = "succeeded";
       state.error = null;
-      state.placesDetails = action.payload;
+      state.placesDetail = action.payload;
     },
     [fetchPlaces.rejected]: (state, action) => {
+      state.status = "error";
+      state.error = action.error.message;
+    },
+    [autoComplete.pending]: (state, action) => {
+      state.error = null;
+      state.status = "completing";
+    },
+    [autoComplete.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.error = null;
+      state.autoCompletePlaces = action.payload;
+    },
+    [autoComplete.rejected]: (state, action) => {
       state.status = "error";
       state.error = action.error.message;
     },

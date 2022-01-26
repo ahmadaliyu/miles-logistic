@@ -13,9 +13,14 @@ import fetchWithTimeout from "./fetchWithTimeOut";
  *
  * @return {object} response the entire response object
  */
-export const api = async (fullPath, httpMethod, contentType, payload = {}) => {
-  let options;
-  let respData;
+
+interface RESPONSE {
+  [key: string] : any
+}
+
+export const api = async (fullPath: string, httpMethod?:string, contentType?:string, payload: RESPONSE = {})   => {
+  let options: { body?: any; headers?: { "Content-Type": string; }; method?: string; };
+  let respData: any;
 
   //if there is http method then that means we have request options
   if (httpMethod)
@@ -43,10 +48,10 @@ export const api = async (fullPath, httpMethod, contentType, payload = {}) => {
     const unsubscibe = NetInfo.addEventListener((state) => {
       errorToastForTryCatch(
         state.isConnected && e.toString() !== "AbortError: Aborted"
-          ? "There might be an error on the server. Please try again later"
+          ? "Server Error. Please try again"
           : e.toString() === "AbortError: Aborted"
           ? "Request timeout"
-          : "You don't have an internet connection. Please try again later",
+          : "You don't have an internet connection. Check your connection",
       );
     });
     unsubscibe();

@@ -1,29 +1,23 @@
 import React, { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from "react-native";
 import AppButton from "../../reusables/AppButton";
-import AppInput from "../../reusables/AppInput";
 import AppText from "../../reusables/AppText";
-import Track from "../../../assets/icons/navigation.svg";
-import Close from "../../../assets/icons/close.svg";
 import DelieveryAmico from "../../../assets/images/delivery-amico.svg";
 import DelieveryBike from "../../../assets/images/bike.svg";
 import Truck from "../../../assets/images/truck.svg";
-import CustomModal from "../../reusables/CustomModal";
 import Colors from "../../utils/Colors";
-import Map from "../Map";
 import { fetchPlaces } from "../../redux/maps/mapThunk";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import * as Location from "expo-location";
 import { formatToast } from "../../helpers/formatToast";
-import { mapReducer } from "../../redux/maps/mapReducer";
 import AppCard from "../../reusables/AppCard";
 import AppSVG from "../../reusables/AppSVG";
 import { multiCheckbox } from "../../helpers/multiCheckbox";
+import { useNavigation } from "@react-navigation/native";
+
 
 const vehicles = [
   {
@@ -42,42 +36,12 @@ const vehicles = [
   },
 ];
 
-const UserHome = ({ navigation }) => {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedVehicle, setSelectedVehicle] = useState();
+const UserHome = () => {
+  const navigation = useNavigation()
   const [lists, setList] = useState(vehicles);
 
-  const status = useSelector((state) => state.mapSlice.status);
+  const status = useSelector((state : RootStateOrAny) => state.mapSlice.status);
   // const placesDetails = useSelector((state) => state.mapSlice.placesDetails);
-
-  // console.log("bfhfhfhfhfhfh", placesDetails);
-
-  const mapDetail = () => {
-    let mapDetails = [];
-    if (placesDetails && placesDetails.length != 0) {
-      placesDetails.forEach((elm) => {
-        mapDetails.push({
-          lat: elm.geometry.location.lat,
-          lng: elm.geometry.location.lng,
-        });
-      });
-    }
-
-    const fetchedData = [...placesDetails];
-    let lat;
-    let lng;
-    if (fetchedData.length !== 0) {
-      // console.log(fetchedData);
-      fetchedData.forEach((itm) => {
-        lat = itm.geometry.location.lat;
-        lng = itm.geometry.location.lng;
-      });
-    }
-    return {
-      lat,
-      lng,
-    };
-  };
 
   const dispatch = useDispatch();
 
@@ -99,7 +63,7 @@ const UserHome = ({ navigation }) => {
     })();
   }, []);
 
-  const totalPickedVehicle = (list) => {
+  const totalPickedVehicle = (list: any[]) => {
     let picked = [];
     list.forEach((itm) => {
       if (itm.checked) {
@@ -158,7 +122,7 @@ const UserHome = ({ navigation }) => {
             fontSize={13}
             color="default"
           />
-          <AppSVG svgName={DelieveryAmico} width={120} height={120} />
+          <AppSVG svgName={DelieveryAmico} width={120} height={120}  />
         </View>
       </AppCard>
       <AppText
@@ -187,6 +151,7 @@ const UserHome = ({ navigation }) => {
                 width="70%"
                 borderRadius={25}
                 pv="9%"
+                al="center"
               >
                 <View>
                   <AppSVG
@@ -261,6 +226,7 @@ const UserHome = ({ navigation }) => {
         })}
       </View>
       <AppButton
+        onPress={() => navigation.navigate("maps" as never)}
         borderRadius={20}
         fontFamily="NR"
         fontSize={16}
@@ -269,63 +235,6 @@ const UserHome = ({ navigation }) => {
         title={"Continue"}
         mt={"20%"}
       />
-      {/* <View style={{ width: "85%", height: "85%" }}>
-        <Map />
-      </View>
-      <AppButton
-        width={60}
-        height={60}
-        borderRadius={100}
-        fontSize={13}
-        title="Route"
-        onPress={() => setModalVisible(true)}
-        ml={"65%"}
-        color="default"
-        textColor="primary"
-        iconWidth={25}
-        iconHeight={25}
-        iconName={Track}
-        fontFamily="NB"
-      />
-      <CustomModal
-        isVisible={isModalVisible}
-        onBackdropPress={() => setModalVisible(false)}
-        onSwipeComplete={() => setModalVisible(false)}
-      >
-        <AppText
-          textAlign={"center"}
-          mt={"10%"}
-          fontFamily="NSB"
-          fontSize={18}
-          title={"Route"}
-        />
-        <View
-          style={{
-            flexDirection: "column",
-            justifyContent: "space-between",
-            flex: 1,
-          }}
-        >
-          <View>
-            <AppInput
-              alignSelf="center"
-              mt={"10%"}
-              placeholder={"Pickup Location"}
-              rightIcon={Close}
-              rIconWidth={15}
-              rIconHeight={15}
-            />
-            <AppInput
-              alignSelf="center"
-              mv={"7%"}
-              placeholder={"Delivery Location"}
-              rIconWidth={15}
-              rIconHeight={15}
-              rightIcon={Close}
-            />
-          </View>
-        </View>
-      </CustomModal> */}
     </View>
   );
 };

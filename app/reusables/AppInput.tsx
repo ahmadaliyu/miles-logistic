@@ -1,16 +1,18 @@
 import React from "react";
 import { View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { TEXTINPUTPROPS } from "../helpers/utils/interface";
 import Colors from "../utils/Colors";
 import AppButton from "./AppButton";
 import AppSVG from "./AppSVG";
 
-function AppInput({
+const AppInput = ({
   iconName,
   smallBtn,
   onPressSmallBtn,
   rightIcon,
   placeholderTextColor = "#7A7A7A",
   textAlign,
+  alignSelf,
   textWidth = "75%",
   width = "85%",
   height,
@@ -31,8 +33,11 @@ function AppInput({
   fontFamily,
   styley,
   placeholder,
+  value,
+  onChangeText,
+  onFocus,
   ...otherProps
-}) {
+} : TEXTINPUTPROPS) => {
   return (
     <View
       style={[
@@ -49,6 +54,7 @@ function AppInput({
           marginBottom: mb,
           marginTop: mt,
           paddingVertical: pv,
+          alignSelf:alignSelf,
           ...otherProps,
         },
       ]}
@@ -57,6 +63,9 @@ function AppInput({
       <TextInput
         placeholderTextColor={placeholderTextColor}
         placeholder={placeholder}
+        onChangeText={onChangeText}
+        onFocus={onFocus}
+        value={value}
         style={[
           styles.inputName,
           {
@@ -66,7 +75,6 @@ function AppInput({
             marginLeft: ML,
           },
         ]}
-        textAlign={textAlign}
         {...otherProps}
       />
       {smallBtn && (

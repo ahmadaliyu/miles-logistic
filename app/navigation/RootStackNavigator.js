@@ -10,6 +10,8 @@ import UserHome from "../components/user/UserHome";
 import UserProfile from "../components/user/UserProfile";
 import TabNavigator from "./TabNavigator";
 import RouteModal from "../components/RouteModal";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import DrawerNavigator from "./DrawerNavigation";
 
 // const Stack = createNativeStackNavigator();
 const Stack = createStackNavigator();
@@ -46,9 +48,14 @@ const RootStackNavigator = () => {
       />
       <Stack.Screen
         options={({ navigation }) => ({})}
+        name="drawer"
+        component={DrawerNavigator}
+      />
+      {/* <Stack.Screen
+        options={({ navigation }) => ({})}
         name="Tab"
         component={TabNavigator}
-      />
+      /> */}
       <Stack.Screen
         name="routeModal"
         component={RouteModal}

@@ -1,30 +1,15 @@
 import React from "react";
 import { Text, View } from "react-native";
+import { TEXTPROPS } from "../helpers/utils/interface";
 
-function AppText({
-  title,
-  color = "#333333",
-  fontSize = 14,
-  textAlign,
-  width,
-  m,
-  mv,
-  mh,
-  ml,
-  mr,
-  mt,
-  mb,
-  style,
-  fontFamily = "NR",
-  lineHeight = 18,
-  alignItems,
-  textStyle,
-  ...otherProps
-}) {
+const AppText = (
+  {title , width, color = "#333333", fontSize = 16,textAlign,fontFamily = "NR", lineHeight = 18, style, alignItems, m, mv, mh, ml, mr, mt, mb, ...otherProps}
+  
+ : TEXTPROPS) => {
   return (
     <View
       style={[
-        otherProps.style,
+        otherProps,
         style,
         {
           alignItems: alignItems,
@@ -36,12 +21,13 @@ function AppText({
           marginTop: mt,
           marginBottom: mb,
           width: width,
+          ...otherProps
         },
       ]}
     >
       <Text
         style={[
-          { ...otherProps },
+          { ...otherProps.textStyle },
           {
             color: color,
             fontSize: fontSize,

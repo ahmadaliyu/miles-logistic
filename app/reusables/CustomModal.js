@@ -25,6 +25,8 @@ function CustomModal({
         swipeDirection={"down"}
         isVisible={isVisible}
         backdropColor={Colors.primary}
+        statusBarTranslucent={true}
+        // animationIn="bounceIn"
       >
         <View style={[styles.border, { height: "80%" }]}>
           <View
