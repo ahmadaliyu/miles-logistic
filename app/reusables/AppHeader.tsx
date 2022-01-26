@@ -1,8 +1,9 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
-import AppSVG from "../reusables/AppSVG";
-import AppText from "../reusables/AppText";
+import AppSVG from "./AppSVG";
+import AppText from "./AppText";
 import Colors from "../utils/Colors";
+import { HEADERPROPS } from "../helpers/utils/interface";
 
 const AppHeader = ({
   title,
@@ -26,9 +27,10 @@ const AppHeader = ({
   child,
   imageHeight,
   imageWidth,
+  iconLeft,
   styleV,
   ...props
-}) => {
+} : HEADERPROPS) => {
   return (
     <View
       style={[
@@ -58,7 +60,7 @@ const AppHeader = ({
             {username && (
               <AppText
                 color={Colors.mediumDark}
-                fontFamily="Nunito-Bold"
+                fontFamily="NB"
                 title={username}
                 ml="3%"
               />
@@ -66,9 +68,12 @@ const AppHeader = ({
           </View>
         </View>
       ) : (
+        <>
         <TouchableOpacity activeOpacity={0.7} onPress={onPressLeft}>
           {leftButton && <AppSVG svgName={leftButton} />}
+          {iconLeft && <>{iconLeft}</>}
         </TouchableOpacity>
+          </>
       )}
       {headerImage ? (
         <AppSVG

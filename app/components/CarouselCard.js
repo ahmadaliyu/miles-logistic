@@ -64,7 +64,7 @@ const CarouselCards = ({ navigation }) => {
             index: 0,
             routes: [
               {
-                name: "Tab",
+                name: "drawer",
               },
             ],
           })

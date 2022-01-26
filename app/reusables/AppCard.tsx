@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TouchableHighlight, StyleSheet } from "react-native";
 import Colors from "../utils/Colors";
+import { CARDPROPS } from '../helpers/utils/interface';
 
 const AppCard = ({
   disabled,
@@ -12,13 +13,14 @@ const AppCard = ({
   ph = "4.5%",
   mv = "0.9%",
   alS,
+  al,
   style,
-  styleV,
   background = "default",
-  ...otherprops
-}) => {
+  ...otherProps
+} : CARDPROPS) => {
   return (
     <TouchableHighlight
+    {...otherProps}
       onPress={onPress}
       underlayColor={Colors[underlay]}
       disabled={disabled}
@@ -26,13 +28,13 @@ const AppCard = ({
         style,
         styles.touchable,
         {
+          alignItems: al,
           width: width,
           paddingHorizontal: ph,
           paddingVertical: pv,
           marginVertical: mv,
           backgroundColor: Colors[background],
           alignSelf: alS,
-          ...otherprops,
         },
       ]}
     >

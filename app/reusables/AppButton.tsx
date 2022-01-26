@@ -1,9 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { BUTTONPROPS } from "../helpers/utils/interface";
 import Colors from "../utils/Colors";
 import AppSVG from "./AppSVG";
 
-function AppButton({
+const AppButton = ({
   title,
   onPress,
   color = "primary",
@@ -31,7 +32,7 @@ function AppButton({
   alignSelf = "center",
   fontFamily = "NSB",
   ...otherprops
-}) {
+} : BUTTONPROPS)  => {
   return (
     <TouchableOpacity
       activeOpacity={0.4}

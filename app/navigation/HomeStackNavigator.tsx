@@ -1,12 +1,15 @@
 import * as React from "react";
-import { TouchableOpacity, Image } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import BackArrow from "../../assets/icons/back-arrow.svg";
-import BellIcon from "../../assets/icons/notification-icon.svg";
 import UserHome from "../components/user/UserHome";
 import Map from "../components/Map";
 import AppHeader from "../reusables/AppHeader";
-import AppSVG from "../reusables/AppSVG";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import OrderShipment from "../components/user/OrderShipment";
+
+interface PROPS{
+  navigation: any
+}
+
 
 const Stack = createStackNavigator();
 
@@ -21,19 +24,14 @@ const HomeStackNavigator = () => {
         name="user-home"
         component={UserHome}
         options={{
-          header: ({ navigation }) => (
-            <AppHeader
-              // pt="10%"
-              // leftButton={BackArrow}
-              rightButton={BellIcon}
-              title={""}
-            />
+          header: ({ navigation } : PROPS) => (
+            <AppHeader pt="10%" onPressLeft={() => navigation.openDrawer()} iconLeft={<Ionicons name="menu" size={30} />} />
           ),
         }}
       />
       <Stack.Screen
         name="order-shipment"
-        component={UserHome}
+        component={OrderShipment}
         options={{
           header: ({ navigation }) => (
             <AppHeader pt="10%" title={"Order a shipment"} />

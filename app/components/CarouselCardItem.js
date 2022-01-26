@@ -9,15 +9,13 @@ export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
 const CarouselCardItem = ({ item, index }) => {
   return (
-    <View style={styles.container} key={index}>
-      <AppSVG svgName={item.imgUrl} width={260} height={260} al={"center"} />
+    <View style={{alignItems:"center"}} key={index}>
+      <AppSVG svgName={item.imgUrl} width={260} height={260}  />
       <AppText
         color="#4267B2"
-        color={Colors.primary}
         title={item.title}
         fontFamily="NB"
         fontSize={18}
-        ml="7%"
       />
       <AppText
         color="#7A7A7A"
@@ -25,7 +23,8 @@ const CarouselCardItem = ({ item, index }) => {
         fontSize={14}
         lineHeight={18}
         mt="2%"
-        ml="7%"
+        textAlign="center"
+        width={"90%"}
       />
     </View>
   );

@@ -4,6 +4,7 @@ import mapReducer from "./maps/mapReducer";
 
 // const middleWares = [];
 
+
 const store = configureStore({
   reducer: {
     mapSlice: mapReducer,

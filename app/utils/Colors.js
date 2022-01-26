@@ -17,5 +17,9 @@ export default {
   facebookColor: "#4267B2",
   twitterColor: "#1DA1F2",
   danger: "#FD2727",
+  success:"rgba(105, 240, 174, 1)",
   mediumGrey: "#E5E5E5",
+  dim: '#808080',
+  dimmer: "rgba(196, 196, 196, 1)",
+  highlight: '#F2F8E7'
 };
