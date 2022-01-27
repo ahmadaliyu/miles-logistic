@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import store from "./app/redux/store";
 import { toastConfig } from "./app/helpers/ToastConfiguration";
 import AuthScreen from "./app/components/auth/AuthScreen";
+import { NativeBaseProvider } from "native-base";
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -37,13 +38,15 @@ export default function App() {
   }
   return (
     <Provider store={store}>
+      <NativeBaseProvider>
       <View style={styles.container}>
         <NavigationContainer>
           <AuthScreen />
           <Toast config={toastConfig} />
         </NavigationContainer>
         <StatusBar style="auto" />
-      </View>
+        </View>
+        </NativeBaseProvider>
     </Provider>
   );
 }

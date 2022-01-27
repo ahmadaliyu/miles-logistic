@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { autoComplete, fetchPlaces } from "./mapThunk";
+import { autoComplete, fetchPlaces, searchAddress, searchLocation } from './mapThunk';
 
 const initialState = {
   placesDetail: [],
   autoCompletePlaces: [],
+  addresses: [],
+  locations:[],
   status: "idle",
   error: null,
 };
@@ -37,6 +39,32 @@ const mapSlice = createSlice({
       state.autoCompletePlaces = action.payload;
     },
     [autoComplete.rejected]: (state, action) => {
+      state.status = "error";
+      state.error = action.error.message;
+    },
+    [searchAddress.pending]: (state, action) => {
+      state.error = null;
+      state.status = "address-loading";
+    },
+    [searchAddress.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.error = null;
+      state.addresses = action.payload;
+    },
+    [searchAddress.rejected]: (state, action) => {
+      state.status = "error";
+      state.error = action.error.message;
+    },
+    [searchLocation.pending]: (state, action) => {
+      state.error = null;
+      state.status = "location-loading";
+    },
+    [searchLocation.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.error = null;
+      state.locations = action.payload;
+    },
+    [searchLocation.rejected]: (state, action) => {
       state.status = "error";
       state.error = action.error.message;
     },

@@ -48,7 +48,8 @@ export interface BUTTONPROPS {
   mt?: Combinable,
   mb? : Combinable,
   mv? : Combinable,
-  pv? : Combinable,
+  pv?: Combinable,
+  ph?:Combinable,
   size? : Combinable,
   style? : any,
   styleV? : any,
@@ -75,7 +76,8 @@ export interface CARDPROPS{
     al?:string,
     alS?:Combinable,
     style?:any,
-    styleV?:any,
+  styleV?: any,
+  childStyle?:any,
     background?: string,
     otherprops?:any
 }

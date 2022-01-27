@@ -1,25 +1,26 @@
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { BUTTONPROPS } from "../helpers/utils/interface";
-import Colors from "../utils/Colors";
-import AppSVG from "./AppSVG";
+import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { BUTTONPROPS } from '../helpers/utils/interface'
+import Colors from '../utils/Colors'
+import AppSVG from './AppSVG'
 
 const AppButton = ({
   title,
   onPress,
-  color = "primary",
-  textColor = "default",
+  color = 'primary',
+  textColor = 'default',
   borderColor,
   borderWidth,
-  width = "80%",
+  width = '80%',
   height,
   fontSize = 18,
   mr,
   ml,
   mt,
   mb,
-  mv = "4%",
-  pv = "3%",
+  mv = '4%',
+  pv = '3%',
+  ph,
   size,
   style,
   styleV,
@@ -29,10 +30,10 @@ const AppButton = ({
   iconWidth = 15,
   indicator,
   borderRadius = 5,
-  alignSelf = "center",
-  fontFamily = "NSB",
+  alignSelf = 'center',
+  fontFamily = 'NSB',
   ...otherprops
-} : BUTTONPROPS)  => {
+}: BUTTONPROPS) => {
   return (
     <TouchableOpacity
       activeOpacity={0.4}
@@ -79,22 +80,22 @@ const AppButton = ({
         </Text>
       )}
     </TouchableOpacity>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 5,
     // marginVertical: "5%",
   },
 
   eText: {
-    fontFamily: "NSB",
+    fontFamily: 'NSB',
     color: Colors.default,
     lineHeight: 20,
   },
-});
+})
 
-export default AppButton;
+export default AppButton

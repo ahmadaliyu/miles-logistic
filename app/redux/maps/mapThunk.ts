@@ -39,3 +39,31 @@ export const autoComplete = createAsyncThunk(
       return formmatedAutoPlaces;
   }
 )
+
+export const searchAddress = createAsyncThunk(
+  "searchAddress/maps",
+  async (data : any) => {
+    const response = await api(
+     'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+          data.address +
+          '&key=' +
+          googleApiKey
+    );
+      return response;
+  }
+)
+
+export const searchLocation = createAsyncThunk(
+  "searchLocation/maps",
+  async (data : any) => {
+    const response = await api(
+    'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
+          data.latitude +
+          ',' +
+          data.longitude +
+          '&radius=4500&key=' +
+          googleApiKey
+    );
+      return response;
+  }
+)
