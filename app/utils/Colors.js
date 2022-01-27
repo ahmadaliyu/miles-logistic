@@ -3,7 +3,7 @@ export default {
   default: "#FFFFFF",
   cloudWhite: "#7A7A7A",
   dark: "#333333",
-  mediumDark: "#3A3A3A",
+   mediumDark: '#808080',
   orange: "#F2994A",
   rgbLightBlue: "rgba(170, 204, 182, 1)",
   rgbLightRed: "rgba(253, 39, 39, 0.6)",
@@ -21,5 +21,9 @@ export default {
   mediumGrey: "#E5E5E5",
   dim: '#808080',
   dimmer: "rgba(196, 196, 196, 1)",
-  highlight: '#F2F8E7'
+  highlight: '#F2F8E7',
+  rgbShattered: "rgba(242, 242, 242, 0.2)",
+  darkSecondary: "rgba(122, 122, 122, 1)",
+  green: "#96C63D",
+  lightDim:"rgba(242, 242, 242, 0.2)"
 };

@@ -1,9 +1,9 @@
-import React from "react";
-import { View, TouchableOpacity } from "react-native";
-import AppSVG from "./AppSVG";
-import AppText from "./AppText";
-import Colors from "../utils/Colors";
-import { HEADERPROPS } from "../helpers/utils/interface";
+import React from 'react'
+import { View, TouchableOpacity } from 'react-native'
+import AppSVG from './AppSVG'
+import AppText from './AppText'
+import Colors from '../utils/Colors'
+import { HEADERPROPS } from '../helpers/utils/interface'
 
 const AppHeader = ({
   title,
@@ -15,45 +15,45 @@ const AppHeader = ({
   username,
   leftButtonPng,
   textSize = 16,
-  fontFamily = "NSB",
-  textColor = "#333333",
+  fontFamily = 'NSB',
+  textColor = '#333333',
   mv,
   mh,
   ml,
   mr,
   mt,
   mb,
-  pt = "8%",
+  pt = '8%',
   child,
   imageHeight,
   imageWidth,
   iconLeft,
   styleV,
   ...props
-} : HEADERPROPS) => {
+}: HEADERPROPS) => {
   return (
     <View
       style={[
         {
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           backgroundColor: Colors.default,
           paddingTop: pt,
-          paddingHorizontal: "5.86666%",
-          paddingBottom: "3.23%",
-          width: "100%",
+          paddingHorizontal: '5.86666%',
+          paddingBottom: '3.23%',
+          width: '100%',
         },
         styleV,
       ]}
     >
       {leftButtonPng ? (
-        <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <View
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginHorizontal: "-3%",
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginHorizontal: '-3%',
             }}
           >
             {leftButtonPng && <View>{leftButtonPng}</View>}
@@ -69,15 +69,15 @@ const AppHeader = ({
         </View>
       ) : (
         <>
-        <TouchableOpacity activeOpacity={0.7} onPress={onPressLeft}>
-          {leftButton && <AppSVG svgName={leftButton} />}
-          {iconLeft && <>{iconLeft}</>}
-        </TouchableOpacity>
-          </>
+          <TouchableOpacity activeOpacity={0.7} onPress={onPressLeft}>
+            {leftButton && <AppSVG svgName={leftButton} />}
+            {iconLeft && <View>{iconLeft}</View>}
+          </TouchableOpacity>
+        </>
       )}
       {headerImage ? (
         <AppSVG
-          style={{ alignItems: "center", justifyContent: "center" }}
+          style={{ alignItems: 'center', justifyContent: 'center' }}
           svgName={headerImage}
           height={30}
         />
@@ -87,7 +87,7 @@ const AppHeader = ({
           fontSize={textSize}
           fontFamily={fontFamily}
           color={textColor}
-          textStyle={{ marginBottom: "1.25%" }}
+          textStyle={{ marginBottom: '1.25%' }}
         />
       )}
       {/* <TouchableOpacity
@@ -98,14 +98,14 @@ const AppHeader = ({
         {rightButton && <View>{rightButton}</View>}
       </TouchableOpacity> */}
       <TouchableOpacity
-        style={{ alignItems: "center", justifyContent: "center" }}
+        style={{ alignItems: 'center', justifyContent: 'center' }}
         activeOpacity={0.7}
         onPress={onPressRight}
       >
         {rightButton && <AppSVG svgName={rightButton} width={30} height={30} />}
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
-export default AppHeader;
+export default AppHeader
