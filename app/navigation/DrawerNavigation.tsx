@@ -53,7 +53,6 @@ const CustomDrawerContent = (props: any, header: any) => {
               fontSize={14}
               mt="1%"
               color={'rgba(242, 242, 242, 0.2)'}
-              fontFamily="NSB"
             />
           </View>
         </View>

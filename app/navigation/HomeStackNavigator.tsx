@@ -1,21 +1,22 @@
-import * as React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
-import UserHome from '../components/user/UserHome'
-import Map from '../components/Map'
-import AppHeader from '../reusables/AppHeader'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import OrderShipment from '../components/user/OrderShipment'
-import Companies from '../components/logistics/Companies'
-import RequestDetails from '../components/logistics/RequestDetails'
-import AppText from '../reusables/AppText'
-import BackArrow from '../../assets/icons/back-arrow.svg'
-import Colors from '../utils/Colors'
+import * as React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import UserHome from "../components/user/UserHome";
+import Map from "../components/Map";
+import AppHeader from "../reusables/AppHeader";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import OrderShipment from "../components/user/OrderShipment";
+import Companies from "../components/logistics/Companies";
+import RequestDetails from "../components/logistics/RequestDetails";
+import AppText from "../reusables/AppText";
+import BackArrow from "../../assets/icons/back-arrow.svg";
+import Colors from "../utils/Colors";
+import BillSummary from "../components/logistics/BillSummary";
 
 interface PROPS {
-  navigation: any
+  navigation: any;
 }
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 
 const HomeStackNavigator = () => {
   return (
@@ -32,7 +33,7 @@ const HomeStackNavigator = () => {
             <AppHeader
               pt="10%"
               onPressLeft={() => navigation.openDrawer()}
-              iconLeft={<Ionicons name="menu" size={30} />}
+              iconLeft={<Ionicons name="menu-outline" size={30} />}
             />
           ),
         }}
@@ -42,7 +43,7 @@ const HomeStackNavigator = () => {
         component={OrderShipment}
         options={{
           header: ({ navigation }) => (
-            <AppHeader pt="10%" title={'Order a shipment'} />
+            <AppHeader pt="10%" title={"Order a shipment"} />
           ),
         }}
       />
@@ -50,14 +51,27 @@ const HomeStackNavigator = () => {
         name="maps"
         component={Map}
         options={{
-          header: ({ navigation }: PROPS) => <AppHeader pt="1%" title={''} />,
+          header: ({ navigation }: PROPS) => <AppHeader pt="1%" title={""} />,
         }}
       />
       <Stack.Screen
         name="companies"
         component={Companies}
         options={{
-          header: ({ navigation }: PROPS) => <AppHeader pt="1%" />,
+          header: ({ navigation }: PROPS) => (
+            <AppHeader
+              iconLeft={
+                <Ionicons
+                  // name="return-up-back"
+                  name="chevron-back-outline"
+                  size={30}
+                  color={Colors.dark}
+                />
+              }
+              onPressLeft={() => navigation.goBack()}
+              pt="10%"
+            />
+          ),
         }}
       />
       <Stack.Screen
@@ -69,12 +83,36 @@ const HomeStackNavigator = () => {
             <AppHeader
               // title="Request Details"
               pt="10%"
-              // leftButton={BackArrow}
               iconLeft={
                 <Ionicons
-                  name="return-up-back"
-                  size={40}
-                  color={Colors.orange}
+                  // name="return-up-back"
+                  name="chevron-back-outline"
+                  size={30}
+                  color={Colors.dark}
+                />
+              }
+              onPressLeft={() => navigation.goBack()}
+              fontFamily="NR"
+            />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="payment"
+        component={BillSummary}
+        options={{
+          headerShown: true,
+          header: ({ navigation }: PROPS) => (
+            <AppHeader
+              styleV={{ backgroundColor: Colors.default }}
+              title="Payment"
+              pt="10%"
+              iconLeft={
+                <Ionicons
+                  // name="return-up-back"
+                  name="chevron-back-outline"
+                  size={30}
+                  color={Colors.dark}
                 />
               }
               onPressLeft={() => navigation.goBack()}
@@ -84,7 +122,7 @@ const HomeStackNavigator = () => {
         }}
       />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
-export default HomeStackNavigator
+export default HomeStackNavigator;

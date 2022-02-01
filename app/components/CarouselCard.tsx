@@ -27,12 +27,26 @@ const data = [
 
 const CarouselCards = ({ navigation }) => {
   const [index, setIndex] = useState(0);
+  const [showNext, setShowNext] = useState(false);
   const isCarousel = useRef(null);
 
+  const handleSnap = (i) => {
+    if (i == data.length - 1) {
+            setIndex(data.length - 1)
+            setShowNext(true)
+    }
+              setIndex(i)
+
+  }
+
   return (
-    <View>
+         <View>
       <Carousel
-        onSnapToItem={(i) => setIndex(i)}
+        onSnapToItem={(i) => {
+           handleSnap(i)
+         
+        }}
+
         layout="default"
         layoutCardOffset={9}
         ref={isCarousel}
@@ -42,38 +56,43 @@ const CarouselCards = ({ navigation }) => {
         itemWidth={ITEM_WIDTH}
         inactiveSlideShift={0}
         useScrollView={true}
+        
       />
-      <Pagination
-        dotsLength={data.length}
-        activeDotIndex={index}
-        carouselRef={isCarousel}
-        tappableDots={false}
-        dotStyle={{
-          width: 10,
-          height: 10,
-          borderRadius: 5,
-          marginHorizontal: 0,
-          backgroundColor: "rgba(0, 0, 0, 0.92)",
-        }}
-        inactiveDotOpacity={0.4}
-        inactiveDotScale={0.6}
-      />
-      <AppButton
-        onPress={() =>
-          navigation.reset({
-            index: 0,
-            routes: [
-              {
-                name: "drawer",
-              },
-            ],
-          })
-        }
-        width="35%"
-        color="mediumDark"
-        borderRadius={40}
-        title="Skip"
-      />
+      {!showNext &&
+        <Pagination
+          dotsLength={data.length}
+          activeDotIndex={index}
+          carouselRef={isCarousel}
+          tappableDots={false}
+          dotStyle={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            marginHorizontal: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.92)",
+          }}
+          inactiveDotOpacity={0.4}
+          inactiveDotScale={0.6}
+        />
+      }
+      {showNext &&
+        <AppButton
+          onPress={() =>
+            navigation.reset({
+              index: 0,
+              routes: [
+                {
+                  name: "drawer",
+                },
+              ],
+            })
+          }
+          width="35%"
+          color="dark"
+          borderRadius={40}
+          title="Next"
+        />
+      }
     </View>
   );
 };
