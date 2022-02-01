@@ -34,6 +34,7 @@ const AppText = (
             textAlign: textAlign,
             fontFamily: fontFamily,
             lineHeight: lineHeight,
+            fontWeight:"600"
           },
         ]}
       >

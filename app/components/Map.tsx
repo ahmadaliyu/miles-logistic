@@ -1,212 +1,210 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
   Dimensions,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator,
-} from 'react-native'
-import MapView, { Marker } from 'react-native-maps'
-import * as Location from 'expo-location'
-import { formatToast } from '../helpers/formatToast'
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
-import AppText from '../reusables/AppText'
-import AppButton from '../reusables/AppButton'
-import Track from '../../assets/icons/navigation.svg'
-import Close from '../../assets/icons/close.svg'
-import AppSVG from '../reusables/AppSVG'
-import CustomModal from '../reusables/CustomModal'
-import AppInput from '../reusables/AppInput'
-import {
-  autoComplete,
-  fetchPlaces,
-  searchAddress,
-  searchLocation,
-} from '../redux/maps/mapThunk'
-import Colors from '../utils/Colors'
-import { OBJREPRESENTATION } from '../helpers/utils/interface'
-import { googleApiKey } from '../../env'
-import PickupIcon from '../../assets/icons/pickup-address-icon.svg'
-import DeliveryIcon from '../../assets/icons/delivery-address-icon.svg'
-import LottieView from 'lottie-react-native'
-import AppCard from '../reusables/AppCard'
-import Animated, { ZoomIn, ZoomInLeft } from 'react-native-reanimated'
-import { Controller, useForm } from 'react-hook-form'
+} from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
+import { formatToast } from "../helpers/formatToast";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import AppText from "../reusables/AppText";
+import AppButton from "../reusables/AppButton";
+import Track from "../../assets/icons/navigation.svg";
+import Close from "../../assets/icons/close.svg";
+import AppSVG from "../reusables/AppSVG";
+import CustomModal from "../reusables/CustomModal";
+import AppInput from "../reusables/AppInput";
+import { autoComplete } from "../redux/maps/mapThunk";
+import Colors from "../utils/Colors";
+import { OBJREPRESENTATION } from "../helpers/utils/interface";
+import { googleApiKey } from "../../env";
+import PickupIcon from "../../assets/icons/pickup-address-icon.svg";
+import DeliveryIcon from "../../assets/icons/delivery-address-icon.svg";
+import LottieView from "lottie-react-native";
+import AppCard from "../reusables/AppCard";
+import Animated, { ZoomInLeft } from "react-native-reanimated";
+import { Controller, useForm } from "react-hook-form";
+import { Divider } from "native-base";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
-const HEIGHT = Dimensions.get('window').height
-const WIDTH = Dimensions.get('window').width
+const HEIGHT = Dimensions.get("window").height;
+const WIDTH = Dimensions.get("window").width;
 
 const MapScreen = ({ navigation: { navigate } }) => {
-  let restaurantsFromPickupLocation = []
-  let combinedRestaurants = []
-  let restaurantsFromDeliveryLocation = []
-  const [currenLocationtLat, setCurrenLocationtLat] = useState(null)
-  const [currenLocationtLong, setCurrenLocationLong] = useState(null)
-  const [pickupLocationtLat, setPickupLocationLat] = useState(null)
-  const [pickupLocationtLong, setPickupLocationLong] = useState(null)
-  const [deliveryLocationLat, setDeliveryLocationLat] = useState(null)
-  const [deliveryLocationLong, setDeliveryLocationLong] = useState(null)
-  const [isModalVisible, setModalVisible] = useState(false)
-  const [pickupAddress, setPickupAddress] = useState()
-  const [deliveryAddress, setDeliveryAddress] = useState()
-  const [focus, setFocus] = useState(false)
-  const [focus2, setFocus2] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
-  const [
-    listFromCombinedRestaurants,
-    setListFromCombinedRestaurants,
-  ] = useState(combinedRestaurants)
+  let restaurantsFromPickupLocation = [];
+  let combinedRestaurants = [];
+  let restaurantsFromDeliveryLocation = [];
+  const [currenLocationtLat, setCurrenLocationtLat] = useState(null);
+  const [currenLocationtLong, setCurrenLocationLong] = useState(null);
+  const [pickupLocationtLat, setPickupLocationLat] = useState(null);
+  const [pickupLocationtLong, setPickupLocationLong] = useState(null);
+  const [deliveryLocationLat, setDeliveryLocationLat] = useState(null);
+  const [deliveryLocationLong, setDeliveryLocationLong] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [pickupAddress, setPickupAddress] = useState();
+  const [deliveryAddress, setDeliveryAddress] = useState();
+  const [focus, setFocus] = useState(false);
+  const [focus2, setFocus2] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [listFromCombinedRestaurants, setListFromCombinedRestaurants] =
+    useState(combinedRestaurants);
 
   const placesAutocomplete = useSelector(
     (state: RootStateOrAny) => state.mapSlice.autoCompletePlaces,
-  )
-  const status = useSelector((state: RootStateOrAny) => state.mapSlice.status)
+  );
+  const status = useSelector((state: RootStateOrAny) => state.mapSlice.status);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm()
+  } = useForm();
 
   const handleAutoComplete = (text?: any, id?: string) => {
-    if (id == 'pickup') setPickupAddress(text)
-    else setDeliveryAddress(text)
-    dispatch(autoComplete({ text }))
-  }
+    if (id == "pickup") setPickupAddress(text);
+    else setDeliveryAddress(text);
+    dispatch(autoComplete({ text }));
+  };
 
   const handleSelectAddress = async (address?: any, id?: string) => {
-    if (id === 'pickup') {
-      setPickupAddress(address)
-      setFocus(false)
+    if (id === "pickup") {
+      setPickupAddress(address);
+      setFocus(false);
     } else {
-      setDeliveryAddress(address)
-      setFocus2(false)
+      setDeliveryAddress(address);
+      setFocus2(false);
     }
-  }
+  };
 
   const handleSearchSelectedLocation = async () => {
     if (pickupAddress === null || deliveryAddress === null) {
-      setModalVisible(false)
-      formatToast('Address cannot be empty!')
-      return
+      setModalVisible(false);
+      formatToast("Address cannot be empty!");
+      return;
     }
-    setLoading(!loading)
-    setModalVisible(false)
+    setLoading(!loading);
+    setModalVisible(false);
     try {
       const response = await fetch(
-        'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+        "https://maps.googleapis.com/maps/api/geocode/json?address=" +
           pickupAddress +
-          '&key=' +
+          "&key=" +
           googleApiKey,
-      )
-      const respData = await response.json()
-      const geoData: OBJREPRESENTATION = {}
+      );
+      const respData = await response.json();
+      const geoData: OBJREPRESENTATION = {};
       if (respData.results.length > 0) {
-        geoData['latitude'] = respData.results[0].geometry.location.lat
-        geoData['longitude'] = respData.results[0].geometry.location.lng
-        setPickupLocationLat(geoData.latitude)
-        setPickupLocationLong(geoData.longitude)
+        geoData["latitude"] = respData.results[0].geometry.location.lat;
+        geoData["longitude"] = respData.results[0].geometry.location.lng;
+        setPickupLocationLat(geoData.latitude);
+        setPickupLocationLong(geoData.longitude);
       }
       const response2 = await fetch(
-        'https://maps.googleapis.com/maps/api/geocode/json?address=' +
+        "https://maps.googleapis.com/maps/api/geocode/json?address=" +
           deliveryAddress +
-          '&key=' +
+          "&key=" +
           googleApiKey,
-      )
-      const respData2 = await response2.json()
-      const geoData2: OBJREPRESENTATION = {}
+      );
+      const respData2 = await response2.json();
+      const geoData2: OBJREPRESENTATION = {};
       if (respData2.results.length > 0) {
-        geoData2['latitude'] = respData2.results[0].geometry.location.lat
-        geoData2['longitude'] = respData2.results[0].geometry.location.lng
-        setDeliveryLocationLat(geoData2.latitude)
-        setDeliveryLocationLong(geoData2.longitude)
+        geoData2["latitude"] = respData2.results[0].geometry.location.lat;
+        geoData2["longitude"] = respData2.results[0].geometry.location.lng;
+        setDeliveryLocationLat(geoData2.latitude);
+        setDeliveryLocationLong(geoData2.longitude);
       }
 
       const resPickup = await fetch(
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
+        "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" +
           geoData.latitude +
-          ',' +
+          "," +
           geoData.longitude +
-          '&radius=4500&key=' +
+          "&radius=4500&key=" +
           googleApiKey,
-      )
-      const resPick = await resPickup.json()
+      );
+      const resPick = await resPickup.json();
       resPick.results.forEach((result) => {
-        if (result.types.includes('restaurant')) {
+        if (result.types.includes("restaurant")) {
           restaurantsFromPickupLocation.push({
             place_id: result.place_id,
             name: result.name,
             rating: result.rating,
-          })
+            locLat: result.geometry.location.lat,
+            locLong: result.geometry.location.lng,
+          });
         }
-      })
+      });
 
       const resDelivery = await fetch(
-        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' +
+        "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" +
           geoData2.latitude +
-          ',' +
+          "," +
           geoData2.longitude +
-          '&radius=4500&key=' +
+          "&radius=4500&key=" +
           googleApiKey,
-      )
-      const resDel = await resDelivery.json()
+      );
+      const resDel = await resDelivery.json();
       resDel.results.forEach((result) => {
-        if (result.types.includes('restaurant')) {
+        if (result.types.includes("restaurant")) {
           restaurantsFromDeliveryLocation.push({
             place_id: result.place_id,
             name: result.name,
             rating: result.rating,
-          })
+            locLat: result.geometry.location.lat,
+            locLong: result.geometry.location.lng,
+          });
         }
-      })
+      });
       // console.log(restaurantsFromPickupLocation)
       // console.log(restaurantsFromDeliveryLocation)
-      if (resDel) setLoading(loading)
+      if (resDel) setLoading(loading);
       setListFromCombinedRestaurants([
         ...restaurantsFromPickupLocation,
         ...restaurantsFromDeliveryLocation,
-      ])
+      ]);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const uniqueRestaurants = [
     ...new Map(
-      listFromCombinedRestaurants.map((item) => [item['place_id'], item]),
+      listFromCombinedRestaurants.map((item) => [item["place_id"], item]),
     ).values(),
-  ]
+  ];
 
   useEffect(() => {
-    setLoading(loading)
-  }, [loading, setLoading])
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
-    setListFromCombinedRestaurants(listFromCombinedRestaurants)
-    setPickupAddress(null)
-    setDeliveryAddress(null)
-  }, [])
+    setListFromCombinedRestaurants(listFromCombinedRestaurants);
+    setPickupAddress(null);
+    setDeliveryAddress(null);
+  }, []);
 
   // // console.log(loading)
   // console.log('uniques', uniqueRestaurants)
   // console.log(pickupAddress)
 
   useEffect(() => {
-    ;(async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync()
-      if (status !== 'granted') {
-        formatToast('Permission to access location was denied')
-        return
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        formatToast("Permission to access location was denied");
+        return;
       }
-      let location = await Location.getCurrentPositionAsync({})
-      setCurrenLocationtLat(location.coords.latitude.toString())
-      setCurrenLocationLong(location.coords.longitude.toString())
-    })()
-  }, [])
+      let location = await Location.getCurrentPositionAsync({});
+      setCurrenLocationtLat(location.coords.latitude.toString());
+      setCurrenLocationLong(location.coords.longitude.toString());
+    })();
+  }, []);
   return (
     <View style={styles.container}>
       <MapView
@@ -259,19 +257,41 @@ const MapScreen = ({ navigation: { navigate } }) => {
             <AppSVG svgName={DeliveryIcon} width={35} height={35} />
           </View>
         </Marker>
+
+        {uniqueRestaurants.length > 0 &&
+          uniqueRestaurants.map((elm) => (
+            <Marker
+              key={elm.place_id}
+              pinColor={Colors.primary}
+              coordinate={{
+                latitude: +elm.locLat,
+                longitude: +elm.locLong,
+              }}
+            >
+              <View>
+                <AppText
+                  title={elm.name}
+                  fontSize={12}
+                  fontFamily="NSB"
+                  color={Colors.orange}
+                />
+                <Ionicons name="location" size={30} color={Colors.dark} />
+              </View>
+            </Marker>
+          ))}
       </MapView>
       {uniqueRestaurants.length > 0 && !loading && (
         <Animated.View
           entering={ZoomInLeft}
           style={{
-            position: 'absolute',
+            position: "absolute",
             width: WIDTH,
             marginVertical: HEIGHT * 0.02,
           }}
         >
           <AppCard
             onPress={() =>
-              navigate('companies', {
+              navigate("companies", {
                 uniqueRestaurants,
                 pickupAddress: pickupAddress,
                 deliveryAddress: deliveryAddress,
@@ -279,15 +299,15 @@ const MapScreen = ({ navigation: { navigate } }) => {
             }
             width={WIDTH * 0.6}
             pv="2%"
-            style={{ height: HEIGHT * 0.09, marginLeft: '5%' }}
+            style={{ height: HEIGHT * 0.09, marginLeft: "5%" }}
           >
             <AppText
               title={`${uniqueRestaurants.length} ${
-                uniqueRestaurants.length < 2 ? 'company' : 'companies'
+                uniqueRestaurants.length < 2 ? "company" : "companies"
               } found`}
               fontSize={13}
               color={Colors.primary}
-              style={{ fontWeight: '600' }}
+              style={{ fontWeight: "600" }}
             />
             <AppText title="Click to view" fontSize={12} mt="2%" />
           </AppCard>
@@ -298,51 +318,54 @@ const MapScreen = ({ navigation: { navigate } }) => {
           style={{
             height: HEIGHT,
             width: WIDTH,
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
+            alignItems: "center",
+            justifyContent: "center",
+            position: "absolute",
+            backgroundColor: Colors.rgbOverlay,
           }}
         >
           <LottieView
-            source={require('../../assets/animations/location-finding.json')}
+            source={require("../../assets/animations/loading-bloob.json")}
             style={{ width: 200, height: 200 }}
             autoPlay
             loop
           />
         </View>
       )}
-      <TouchableOpacity
-        // disabled={}
-        onPress={() => setModalVisible(true)}
-        style={{
-          marginTop: HEIGHT * 0.85,
-          marginLeft: WIDTH * 0.75,
-          position: 'absolute',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '5%',
-          borderRadius: 40,
-          backgroundColor: '#fff',
-        }}
-      >
-        <AppSVG svgName={Track} width={25} height={25} />
-      </TouchableOpacity>
+      {!loading && (
+        <TouchableOpacity
+          // disabled={loading}
+          onPress={() => setModalVisible(true)}
+          style={{
+            marginTop: HEIGHT * 0.85,
+            marginLeft: WIDTH * 0.75,
+            position: "absolute",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "5%",
+            borderRadius: 40,
+            backgroundColor: "#fff",
+          }}
+        >
+          <AppSVG svgName={Track} width={25} height={25} />
+        </TouchableOpacity>
+      )}
       <CustomModal
         isVisible={isModalVisible}
         onBackdropPress={() => setModalVisible(false)}
         onSwipeComplete={() => setModalVisible(false)}
       >
         <AppText
-          textAlign={'center'}
-          mt={'10%'}
+          textAlign={"center"}
+          mt={"10%"}
           fontFamily="NSB"
           fontSize={18}
-          title={'Route'}
+          title={"Route"}
         />
         <View
           style={{
-            flexDirection: 'column',
-            justifyContent: 'space-between',
+            flexDirection: "column",
+            justifyContent: "space-between",
             flex: 1,
           }}
         >
@@ -352,13 +375,13 @@ const MapScreen = ({ navigation: { navigate } }) => {
               render={({ field: { onChange, onBlur, value } }) => (
                 <AppInput
                   alignSelf="center"
-                  mt={'10%'}
-                  placeholder={'Pickup Location'}
+                  mt={"10%"}
+                  placeholder={"Pickup Location"}
                   rightIcon={Close}
                   rIconWidth={15}
                   rIconHeight={15}
                   value={pickupAddress}
-                  onChangeText={(text) => handleAutoComplete(text, 'pickup')}
+                  onChangeText={(text) => handleAutoComplete(text, "pickup")}
                   onFocus={() => setFocus((prevState) => !prevState)}
                   onPressRightIcon={() => setPickupAddress(null)}
                 />
@@ -367,16 +390,21 @@ const MapScreen = ({ navigation: { navigate } }) => {
               // rules={{ required: true }}
               defaultValue=""
             />
-            {status == 'completing' ? (
+            {status == "completing" ? (
               <View
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   zIndex: 1,
-                  alignSelf: 'center',
+                  alignSelf: "center",
                   marginTop: HEIGHT * 0.2,
                 }}
               >
-                <AppText title="Loading..." fontSize={11} />
+                <AppText
+                  title="Loading..."
+                  fontSize={11}
+                  color={Colors.primary}
+                  fontFamily="NSB"
+                />
               </View>
             ) : (
               <>
@@ -390,7 +418,7 @@ const MapScreen = ({ navigation: { navigate } }) => {
                             <TouchableOpacity
                               style={{}}
                               onPress={() => {
-                                handleSelectAddress(item.description, 'pickup')
+                                handleSelectAddress(item.description, "pickup");
                               }}
                             >
                               <AppText
@@ -401,17 +429,11 @@ const MapScreen = ({ navigation: { navigate } }) => {
                                 title={item.description}
                               />
                             </TouchableOpacity>
-                          )
+                          );
                         }}
                         keyExtractor={(item, id) => id.toString()}
                         ItemSeparatorComponent={() => (
-                          <View
-                            style={{
-                              height: 0.5,
-                              width: '100%',
-                              backgroundColor: 'grey',
-                            }}
-                          ></View>
+                          <Divider color={Colors.grey} />
                         )}
                         showsVerticalScrollIndicator={false}
                       />
@@ -430,8 +452,8 @@ const MapScreen = ({ navigation: { navigate } }) => {
                               onPress={() => {
                                 handleSelectAddress(
                                   item.description,
-                                  'delivery',
-                                )
+                                  "delivery",
+                                );
                               }}
                             >
                               <AppText
@@ -442,17 +464,11 @@ const MapScreen = ({ navigation: { navigate } }) => {
                                 title={item.description}
                               />
                             </TouchableOpacity>
-                          )
+                          );
                         }}
                         keyExtractor={(item, id) => id.toString()}
                         ItemSeparatorComponent={() => (
-                          <View
-                            style={{
-                              height: 0.5,
-                              width: '100%',
-                              backgroundColor: 'grey',
-                            }}
-                          ></View>
+                          <Divider color={Colors.grey} />
                         )}
                         showsVerticalScrollIndicator={false}
                       />
@@ -467,13 +483,13 @@ const MapScreen = ({ navigation: { navigate } }) => {
               render={({ field: { onChange, onBlur, value } }) => (
                 <AppInput
                   alignSelf="center"
-                  mv={'7%'}
-                  placeholder={'Delivery Location'}
+                  mv={"7%"}
+                  placeholder={"Delivery Location"}
                   rIconWidth={15}
                   rIconHeight={15}
                   rightIcon={Close}
                   value={deliveryAddress}
-                  onChangeText={(text) => handleAutoComplete(text, 'delivery')}
+                  onChangeText={(text) => handleAutoComplete(text, "delivery")}
                   onFocus={() => setFocus2((prevState) => !prevState)}
                   onPressRightIcon={() => setDeliveryAddress(null)}
                 />
@@ -492,13 +508,13 @@ const MapScreen = ({ navigation: { navigate } }) => {
           fontSize={16}
           pv="4.5%"
           width="70%"
-          title={'Search'}
-          mt={'20%'}
+          title={"Search"}
+          mt={"20%"}
         />
       </CustomModal>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -510,14 +526,14 @@ const styles = StyleSheet.create({
     height: HEIGHT,
   },
   resultsView: {
-    alignSelf: 'center',
-    padding: '3%',
-    width: '100%',
+    alignSelf: "center",
+    padding: "3%",
+    width: "100%",
     borderRadius: 5,
-    position: 'absolute',
-    marginTop: '50%',
+    position: "absolute",
+    marginTop: "50%",
     zIndex: 1,
   },
-})
+});
 
-export default MapScreen
+export default MapScreen;
